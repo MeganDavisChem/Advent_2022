@@ -1,0 +1,29 @@
+import Data.List
+import System.IO
+
+main = do
+  handle <- openFile "input" ReadMode
+  contents <- hGetContents handle
+  putStrLn $ "The elf with the most calories has " ++ findMaxCal contents ++ " calories"
+  putStrLn $ "Top three elves combined: " ++ findTopThree contents ++ " calories"
+
+findMaxCal :: String -> String
+findMaxCal calstr = show . maximum $ formScannedList calstr
+
+findTopThree :: String -> String
+-- This is extremely hacky
+findTopThree calstr = show . sum . take 3 . reverse . sort $ scanr1 mySorter $ formScannedList calstr
+  where
+    mySorter x acc
+      | x == 0 || acc == 0 = x
+      | otherwise = 1
+
+formScannedList :: String -> [Integer]
+formScannedList = scanCalIntList . convCalListToInts . lines
+  where
+    convCalListToInts = map calStrToCalInt
+      where
+        calStrToCalInt x
+          | x == "" = 0
+          | otherwise = read x :: Integer
+    scanCalIntList = scanl1 (\acc x -> if x == 0 then 0 else acc + x)
