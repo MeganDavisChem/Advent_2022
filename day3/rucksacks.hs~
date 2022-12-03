@@ -25,8 +25,7 @@ partTwo :: String -> Int
 partTwo input_string =
   let badgeValues = map getValue . findBadges
       rucksacks = lines input_string
-      valued_groups = badgeValues rucksacks
-   in sum valued_groups
+   in sum . badgeValues $ rucksacks
   where
     -- Ha! Recursive functions :) find overlaps of each set of three strings
     findBadges :: [String] -> [String]

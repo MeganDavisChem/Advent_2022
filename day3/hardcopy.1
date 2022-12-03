@@ -1,0 +1,31 @@
+ 1 rucksacks.hs  2 day2.hs                                                                                           X
+    8 import Data.List
+    7 import Data.Maybe
+    6 import System.IO
+    5
+    4 main = do
+    3   handle <- openFile "example" ReadMode
+    2   contents <- hGetContents handle
+    1   --  putStrLn $ "Part one is: " ++ show $ partOne contents
+>>9     putStrLn $ "Part one is: " ++ partOne contents
+    1
+    2 -- Get the value of a character
+    3 getValue :: Char -> Int
+    4 getValue item =
+    5   let itemPriorities = ['a' .. 'z'] ++ ['A' .. 'Z']
+    6    in fromMaybe 0 $ item `elemIndex` itemPriorities
+    7
+    8 -- Split a string into two parts
+    9 splitMiddle :: String -> (String, String)
+   10 splitMiddle rucksack =
+   11   let midpoint = length rucksack `div` 2
+   12    in splitAt midpoint rucksack
+   13
+   14 -- find overlapping characters of two strings
+   15 findOverlap :: (String, String) -> String
+   16 findOverlap (rucksackA, rucksackB) = rucksackA `intersect` rucksackB
+   17
+   18 partOne input_string =
+   19   let rucksacks = map splitMiddle $ lines input_string
+ NORMAL  rucksacks.hs                                                       unix | utf-8 | haskell   30%    9:48  E: 1
+" Couldn't match expected type [Char] with actual type ...n $ "Part one is: " ++ partOne contents | ^^^^^^^^^^^^^^^^
