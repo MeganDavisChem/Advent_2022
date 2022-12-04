@@ -5,21 +5,20 @@ import System.IO
 main = do
   handle <- openFile "input" ReadMode
   contents <- hGetContents handle
-  putStrLn $ "Part one is: " ++ show (solvePart p1Folder contents)
-  putStrLn $ "Part two is: " ++ show (solvePart p2Folder contents)
+  putStrLn $ "Part one is: " ++ show (solvePart (folder p1Folder) contents)
+  putStrLn $ "Part two is: " ++ show (solvePart (folder p2Folder) contents)
 
 solvePart :: (Int -> [[Int]] -> Int) -> String -> Int
 solvePart folder = foldl folder 0 . importAssignments
 
-p2Folder :: Int -> [[Int]] -> Int
-p2Folder acc [a, b]
-  | not (null (a `intersect` b)) = acc + 1
-  | otherwise = acc
+folder :: ([Int] -> [Int] -> Bool) -> (Int -> [[Int]] -> Int)
+folder condition acc [a, b] = if condition a b then acc + 1 else acc
 
-p1Folder :: Int -> [[Int]] -> Int
-p1Folder acc [a, b]
-  | a `isInfixOf` b || b `isInfixOf` a = acc + 1
-  | otherwise = acc
+p1Folder :: [Int] -> [Int] -> Bool
+p1Folder a b = a `isInfixOf` b || b `isInfixOf` a
+
+p2Folder :: [Int] -> [Int] -> Bool
+p2Folder a b = not (null (a `intersect` b))
 
 -- | Makes an overly nested list of pairs of ranges
 importAssignments :: String -> [[[Int]]]
