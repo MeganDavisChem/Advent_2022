@@ -20,6 +20,7 @@ partOne contents =
         else acc
 
 -- Scan over each pair, add to accumulator if a and b have any overlap
+partTwo :: String -> Int
 partTwo contents =
   let assignments = importAssignments contents
    in foldl myScanner 0 assignments
